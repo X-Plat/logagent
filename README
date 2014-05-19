@@ -1,0 +1,50 @@
+             II                               II                            
+BBBBBBBBB   IIII                             IIII                            
+BBBBBBBBBB   II                               II                            
+BBBB  BBBB   II      GGGGGG       PPPPPP      II      PPPPP       EEEEEE    
+BBBB  BBB   IIII    GGGGGGGG     PPPPPPPP    IIII   PPPPPPPPP    EEEEEEEE   
+BBBB BBBB   IIII   GGGGGGGGGG   PPPPPPPPPP   IIII   PPPPPPPPPP  EEEEE EEEE  
+BBBB BBBBB  IIII  GGGG   GGGG   PPPP   PPPP  IIII  PPPP   PPPP  EEE  EEEEEE 
+BBBB   BBBB IIII  GGGG   GGGG   PPP    PPPP  IIII  PPPP   PPPP  EEEE EEEEE  
+BBBB BBBBB  IIII   GGGGG GGGG   PPP PPPPPP   IIII  PPPP PPPPPP  EEEEEEE     
+BBBB BBBBB  IIII    GGGG GGGG   PPP PPPPP    IIII  PPPP PPPPP    EEEEEEE    
+                         GGGG   PPP                PPPP                     
+                        GGGGG   PPP                PPPP                     
+                     GGGGGGG    PPP                PPPP                     
+                      GGGG                                                  
+
+                                Bigpipe
+                               Log Agent
+                            INF/DT + INF/COM
+
+[目标]
+1、从本地磁盘文件获得日志行，并发布到从Bigpipe中
+2、支持日志文件的切割，如cronolog
+
+[快速上手]
+1、配置conf/logagent.conf。必须关注的配置项包括：
+   datasource
+       日志所在的目录位置
+
+   pipename
+       发布到Bigpipe的位置
+
+   meta_host、root_path
+       Zookeeper的位置
+
+   start_file_name
+       初次启动时发布的文件名。如果是从空目录开始发布，可以填access_log；
+   如果是从已经切分过的目录开始发布，则必须填第一个文件的文件名，如
+   access_log.20111031。
+
+2、初次发布请*务必*删除进度文件
+       rm *.progress
+
+3、启动LogAgent
+       ./logagent
+
+   如果启动成功，您稍候将在log/bigpipe_logagent.log中看到日志。
+
+4、保证filelist中只有一个日志文件在被写入，如果有多个写入，可以使用多个logagent实例
+
+5、不要手动使用touch修改日志文件最后修改时间
